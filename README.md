@@ -1,4 +1,4 @@
-# 📸 scrapbook-grid
+# 📸 embedded-scrapbook
 
 Embed your Scrapbook in your own websites.
 
