@@ -458,7 +458,7 @@ const Post = ({
   </section>
 )
 
-const Posts = ({ posts = [], colors = {} }) => [
+const Posts = ({ posts = [], colors = {}, fonts = {} }) => [
   <div className="scrapbook-widget"><Masonry
     key='masonry'
     breakpointCols={{
@@ -522,11 +522,11 @@ const Posts = ({ posts = [], colors = {} }) => [
 
     :root {
       color-scheme: light dark;
-      --fonts-body: 'Baloo 2', system-ui, -apple-system, BlinkMacSystemFont,
+      --fonts-scrapbook-body: system-ui, -apple-system, BlinkMacSystemFont,
         'Segoe UI', Roboto, sans-serif;
-      --fonts-display: 'Shrikhand', system-ui, -apple-system, BlinkMacSystemFont,
+      --fonts-scrapbook-display: system-ui, -apple-system, BlinkMacSystemFont,
         'Segoe UI', Roboto, sans-serif;
-      --fonts-mono: 'SF Mono', 'Roboto Mono', Menlo, Consolas, monospace;
+      --fonts-scrapbook-mono: monospace;
 
       --colors-scrapbook-darker: #151613;
       --colors-scrapbook-dark: #20201d;
@@ -556,6 +556,9 @@ const Posts = ({ posts = [], colors = {} }) => [
       ${Object.keys(colors)
         .map((x) => `--colors-scrapbook-${x}: ${colors[x]};`)
         .join("")}
+      ${Object.keys(fonts)
+        .map((x) => `--fonts-scrapbook-${x}: ${fonts[x]};`)
+        .join("")}
     }
 
     html {
@@ -568,7 +571,7 @@ const Posts = ({ posts = [], colors = {} }) => [
       min-height: 100%;
       margin: 0;
       line-height: 1.5;
-      font-family: var(--fonts-body);
+      font-family: var(--fonts-scrapbook-body);
       font-weight: 400;
       scroll-behavior: smooth;
       background-color: var(--colors-scrapbook-background);
@@ -674,7 +677,7 @@ const Posts = ({ posts = [], colors = {} }) => [
       background-color: var(--colors-scrapbook-background);
       border-radius: 3px;
       color: var(--colors-scrapbook-purple);
-      font-family: var(--fonts-mono);
+      font-family: var(--fonts-scrapbook-mono);
       font-size: 0.9em;
       white-space: pre-wrap;
       padding: 0 0.25em;
