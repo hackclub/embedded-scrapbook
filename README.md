@@ -1,5 +1,5 @@
 # 📸 scrapbook-grid
 
-Embed your Scrapbook in your React site
+Embed your Scrapbook in your own websites.
 
 More coming soon.
