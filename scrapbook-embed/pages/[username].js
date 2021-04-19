@@ -3,6 +3,9 @@ import { useRouter } from "next/router";
 import Head from 'next/head'
 
 const App = (props) => {
+  if(typeof props.initialData == "undefined"){
+    props.initialData.posts = {}
+  }
   const router = useRouter();
   let colors = {};
   Object.keys(router.query).map((x) => {
