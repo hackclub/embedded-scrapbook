@@ -1,4 +1,4 @@
-import Posts from 'scrapbook-grid';
+import Posts from '@hackclub/scrapbook-grid';
 import { useRouter } from "next/router";
 import Head from 'next/head'
 
