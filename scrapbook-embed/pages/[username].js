@@ -44,7 +44,7 @@ export const getStaticPaths = async () => {
         filterByFormula: "{Full Slack Member?} = 1",
         fields: ["Username"],
         sort: [{ field: "Streak Count", direction: "desc" }],
-        maxRecords: 500,
+        maxRecords: 50,
       })}`
   )
     .then((r) => r.json())
@@ -54,6 +54,7 @@ export const getStaticPaths = async () => {
 };
 
 export const getStaticProps = async ({ params }) => {
+  console.log(params.username)
   const initialData = await fetch(
     `https://scrapbook.hackclub.com/api/users/${params.username}`
   ).then((r) => r.json());
