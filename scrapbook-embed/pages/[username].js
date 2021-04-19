@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import Head from 'next/head'
 
 const App = (props) => {
+  console.log(props.initialData.posts)
   if(typeof props.initialData == "undefined"){
     props.initialData.posts = {}
   }
