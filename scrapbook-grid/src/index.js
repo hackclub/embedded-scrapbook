@@ -196,7 +196,7 @@ const CustomEmoji = memo(({ name }) => {
   let [image, setImage] = useState(null)
   useEffect(() => {
     try {
-      fetch('/api/emoji/')
+      fetch('https://scrapbook.hackclub.com/api/emoji/')
         .then((r) => r.json())
         .then((emojis) => {
           if (emojis[emoji]) {
@@ -280,7 +280,7 @@ const Mention = memo(({ username }) => {
   const [img, setImg] = useState(null)
   useEffect(() => {
     try {
-      fetch(`/api/profiles/${trim(username)}/`)
+      fetch(`https://scrapbook.hackclub.com/api/profiles/${trim(username)}/`)
         .then((r) => r.json())
         .then((profile) => setImg(profile.avatar))
     } catch (e) {}
@@ -305,7 +305,7 @@ const Mention = memo(({ username }) => {
 })
 
 const Reaction = ({ name, char, url }) => (
-  <a href={`/r/${name}`}>
+  <a href={`https://scrapbook.hackclub.com/r/${name}`}>
     <a className='post-reaction' title={startCase(name)}>
       {url && (
         <EmojiImg
@@ -335,6 +335,7 @@ const Post = ({
   mux = [],
   reactions = [],
   postedAt,
+  hideReactions,
   slackUrl,
   muted = false
 }) => (
@@ -357,7 +358,7 @@ const Post = ({
         </time>
       </header>
     ) : (
-      <a href='/[profile]' as={`/${user.username}`} prefetch={false}>
+      <a href={`https://scrapbook.hackclub.com/${user.username}`}>
         <a className='post-header'>
           {user.avatar && (
             <img
@@ -372,33 +373,6 @@ const Post = ({
           <section className='post-header-container'>
             <span className='post-header-name'>
               <strong>@{user.username}</strong>
-              <span
-                className={`badge post-header-streak ${
-                  !user.displayStreak || user.streakCount === 0
-                    ? 'header-streak-zero'
-                    : ''
-                }`}
-                title={`${user.streakCount}-day streak`}
-              >
-                {`${user.streakCount <= 7 ? user.streakCount : '7+'}`}
-                <Icon size={24} glyph='admin-badge' title='Streak icon' />
-              </span>
-              {user.css && (
-                <Icon
-                  size={24}
-                  glyph='rep'
-                  title='Has a customized profile'
-                  className='post-header-css'
-                />
-              )}
-              {user.audio && (
-                <Icon
-                  size={24}
-                  glyph='rss'
-                  title='Has a customized sound'
-                  className='post-header-audio'
-                />
-              )}
             </span>
             <time className='post-header-date' dateTime={postedAt}>
               {postedAt?.startsWith('20')
@@ -458,24 +432,35 @@ const Post = ({
   </section>
 )
 
-const Posts = ({ posts = [], colors = {}, fonts = {} }) => [
-  <div className="scrapbook-widget"><Masonry
-    key='masonry'
-    breakpointCols={{
-      10000: 3,
-      1024: 3,
-      640: 2,
-      480: 1,
-      default: 1
-    }}
-    className='masonry-posts'
-    columnClassName='masonry-posts-column'
-  >
-    {posts.map((post) => (
-      <Post key={post.id} {...post} />
-    ))}
-  </Masonry></div>,
-  <style jsx global key='masonry-style'>{`
+const Posts = ({
+  posts = [],
+  colors = {},
+  fonts = {},
+  hideReactions
+}) => [
+  <div className='scrapbook-widget'>
+    <Masonry
+      key='masonry'
+      breakpointCols={{
+        10000: 3,
+        1024: 3,
+        640: 2,
+        480: 1,
+        default: 1
+      }}
+      className='masonry-posts'
+      columnClassName='masonry-posts-column'
+    >
+      {posts.map((post) =>
+        hideReactions == true ? (
+          <Post key={post.id} {...post} profile />
+        ) : (
+          <Post key={post.id} {...post} />
+        )
+      )}
+    </Masonry>
+  </div>,
+  <style key='masonry-style'>{`
     .masonry-posts {
       display: flex;
       width: 100%;
@@ -555,10 +540,10 @@ const Posts = ({ posts = [], colors = {}, fonts = {} }) => [
 
       ${Object.keys(colors)
         .map((x) => `--colors-scrapbook-${x}: ${colors[x]};`)
-        .join("")}
+        .join('')}
       ${Object.keys(fonts)
         .map((x) => `--fonts-scrapbook-${x}: ${fonts[x]};`)
-        .join("")}
+        .join('')}
     }
 
     html {
@@ -618,6 +603,7 @@ const Posts = ({ posts = [], colors = {}, fonts = {} }) => [
       width: 48px;
       height: 48px;
       border-radius: 24px;
+      margin-right: 12px;
     }
     div + .post-header-container {
       padding-left: 8px;
@@ -638,11 +624,26 @@ const Posts = ({ posts = [], colors = {}, fonts = {} }) => [
       transform: rotate(45deg);
     }
     .post-header-streak {
-      margin-right: 4px;
-      margin-left: 8px;
-      padding-left: 10px;
-      font-size: 12px;
-      max-height: 20px;
+      display: none;
+    }
+    .css {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--colors-muted);
+      margin-top: 32px;
+    }
+    .css-icon {
+      margin-left: -4px;
+      margin-right: 8px;
+    }
+    .css-link {
+      flex: 1 1 auto;
+      word-wrap: break-word;
+      word-break: break-all;
+      color: inherit;
+      font-size: 14px;
+      font-family: var(--fonts-mono);
     }
     .post-header-date {
       color: var(--colors-scrapbook-muted);
@@ -707,7 +708,7 @@ const Posts = ({ posts = [], colors = {}, fonts = {} }) => [
       background-color: var(--colors-scrapbook-background);
       max-width: 100%;
       height: auto;
-      max-height: 384px!important;
+      max-height: 384px !important;
       object-fit: contain;
     }
 
@@ -715,7 +716,7 @@ const Posts = ({ posts = [], colors = {}, fonts = {} }) => [
       border-radius: 6px;
       background-color: var(--colors-scrapbook-background);
       max-width: 100%;
-      max-height: 384px!important;
+      max-height: 384px !important;
       object-fit: contain;
     }
     video.post-attachment,

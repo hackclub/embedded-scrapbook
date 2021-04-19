@@ -1,10 +1,10 @@
 {
-  "name": "scrapbook-grid",
-  "version": "1.0.0",
+  "name": "@hackclub/scrapbook-grid",
+  "version": "1.0.1",
   "description": "📸 Embed your Scrapbook in your React site",
   "author": "@sampoder",
   "license": "MIT",
-  "repository": "@sampoder/scrapbook-grid",
+  "repository": "hackclub/embedded-scrapbook",
   "main": "dist/index.js",
   "module": "dist/index.modern.js",
   "source": "src/index.js",
