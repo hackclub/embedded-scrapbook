@@ -41,4 +41,32 @@ If you are unsure about fetching data. Check out Next.js and Incremental Static 
 
 # Embedded Site
 
-More coming soon.
+You could also use an `<iframe>` to add Scrapbook to your site.
+
+Load up either:
+
+```bash
+https://embed.scrapbook.hackclub.com
+```
+
+```bash
+https://embed.scrapbook.hackclub.com/sampoder # a Scrapbook username
+```
+
+```r
+https://embed.scrapbook.hackclub.com/r/ship # a Slack emoji
+```
+
+To customise the system you can use the following query params:
+
+```
+?css=https://example.com/styles.css
+
+?color-red=#ec3750 
+
+?reactions=true
+
+?fonts=%22Baloo%202%22
+```
+
+Built by [@sampoder](https://github.com/sampoder)
