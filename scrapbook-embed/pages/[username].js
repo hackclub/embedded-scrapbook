@@ -2,7 +2,7 @@ import Posts from "@hackclub/scrapbook-grid";
 import { useRouter } from "next/router";
 import Head from 'next/head'
 
-const App = (props) => {
+function App(props){
   console.log(props.initialData.posts)
   if(typeof props.initialData == "undefined"){
     props.initialData.posts = {}
