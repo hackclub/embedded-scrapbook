@@ -3,10 +3,6 @@ import { useRouter } from "next/router";
 import Head from 'next/head'
 
 function App(props){
-  console.log(props.initialData.posts)
-  if(typeof props.initialData == "undefined"){
-    props.initialData.posts = {}
-  }
   const router = useRouter();
   let colors = {};
   Object.keys(router.query).map((x) => {
@@ -40,29 +36,14 @@ function App(props){
   );
 };
 
-export const getStaticPaths = async () => {
-  const { map } = require("lodash");
-  const usernames = await fetch(
-    "https://airbridge.hackclub.com/v0.1/Summer%20of%20Making%20Streaks/Slack%20Accounts" +
-      `?select=${JSON.stringify({
-        filterByFormula: "{Full Slack Member?} = 1",
-        fields: ["Username"],
-        sort: [{ field: "Streak Count", direction: "desc" }],
-        maxRecords: 50,
-      })}`
-  )
-    .then((r) => r.json())
-    .then((u) => map(u, "fields.Username"));
-  const paths = usernames.map((username) => ({ params: { username } }));
-  return { paths, fallback: true };
-};
 
-export const getStaticProps = async ({ params }) => {
-  console.log(params.username)
+export const getServerSideProps = async (context) => {
+  console.log(context.params)
+  console.log('hi!')
   const initialData = await fetch(
-    `https://scrapbook.hackclub.com/api/users/${params.username}`
+    `https://scrapbook.hackclub.com/api/users/${context.params.username}`
   ).then((r) => r.json());
-  return { props: { initialData }, revalidate: 1 };
+  return { props: { initialData } };
 };
 
 export default App;
